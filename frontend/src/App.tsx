@@ -3,43 +3,61 @@ import "./index.scss";
 import "./index.css";
 import "./App.css";
 
-import {
-  EuiProvider,
-  EuiEmptyPrompt,
-  EuiLink,
-  EuiFlexGroup,
-  EuiTitle,
-  EuiIcon,
-} from "@elastic/eui";
-import PixelCanvas from "./PixelCanvas";
+import { useRef } from "react";
+import { EuiFlexGroup, EuiProvider } from "@elastic/eui";
+import PixelCanvas, { PixelCanvasHandle } from "./PixelCanvas";
+import AppHeader from "./components/AppHeader";
+import AppFooter from "./components/AppFooter";
+import ProjectManager from "./components/ProjectManager";
+import Counter from "./components/Counter";
+import { useProjectStore } from "./projectStore";
 
 const MyApp = () => {
+  const canvasRef = useRef<PixelCanvasHandle>(null);
+  const projects = useProjectStore((state) => state.projects);
+  const selectedProjectId = useProjectStore((state) => state.selectedProjectId);
+  const autosaveEnabled = useProjectStore((state) => state.autosaveEnabled);
+  const createProject = useProjectStore((state) => state.createProject);
+  const openProject = useProjectStore((state) => state.openProject);
+  const deleteProject = useProjectStore((state) => state.deleteProject);
+  const toggleAutosave = useProjectStore((state) => state.toggleAutosave);
+
+  const handleCreateProject = (name: string) => {
+    const project = createProject(name);
+    openProject(project.id);
+  };
+
+  const handleSaveProject = () => {
+    if (!selectedProjectId) {
+      return;
+    }
+
+    canvasRef.current?.saveCurrentProject();
+  };
+
   return (
     <EuiProvider>
       <div className="app-content">
-        <div className={`bg-image-wrapper`} />
-        <EuiEmptyPrompt
-          icon={<div className="app-logo" />}
-          title={
-            <EuiTitle className="logo-subtext" size="l">
-              <h1>QuickStitch</h1>
-            </EuiTitle>
-          }
+        <div className="bg-image-wrapper" />
+        <AppHeader />
+
+        <ProjectManager
+          projects={projects}
+          selectedProjectId={selectedProjectId}
+          autosaveEnabled={autosaveEnabled}
+          onCreateProject={handleCreateProject}
+          onOpenProject={openProject}
+          onDeleteProject={deleteProject}
+          onSaveProject={handleSaveProject}
+          onToggleAutosave={toggleAutosave}
         />
+
+        <Counter />
+
         <EuiFlexGroup className={"eui-flex-dotting"}>
-            <PixelCanvas/>
+          <PixelCanvas ref={canvasRef} />
         </EuiFlexGroup>
-        <div className="qs-footer">
-          <span>
-            © 2026 {Math.random() > 0.5 ? "Jiv" : "Lames"}{" "}
-            <EuiLink
-              href="https://github.com/jamesgiu/quick-stitch"
-              target="https://github.com/jamesgiu/quick-stitch"
-            >
-              <EuiIcon size="l" type={"logoGithub"} />
-            </EuiLink>
-          </span>
-        </div>
+        <AppFooter />
       </div>
     </EuiProvider>
   );
