@@ -1,4 +1,5 @@
 import { BrushTool } from "dotting";
+import "../PixelCanvas.css";
 
 type CanvasToolbarProps = {
   brushTool: BrushTool;
@@ -27,54 +28,45 @@ export const CanvasToolbar = ({
   redo,
 }: CanvasToolbarProps) => {
   return (
-    <>
-      <div>
+    <div className="canvas-toolbar" aria-label="Canvas tools">
+      <div className="color-palette" aria-label="Color palette">
         {palette.map((color) => (
-          <div
+          <button
             key={color}
+            type="button"
+            aria-label={`Choose ${color}`}
             onClick={() => changeBrushColor(color)}
-            style={{
-              width: 25,
-              height: 25,
-              margin: 10,
-              border: "1px solid black",
-              backgroundColor: color,
-              display: "inline-block",
-            }}
+            className="color-swatch"
+            style={{ backgroundColor: color }}
           />
         ))}
       </div>
 
-      <div>
+      <label className="tool-picker">
+        <span>Tool</span>
         <select
-          style={{ marginLeft: 15 }}
           value={brushTool}
           onChange={(event) => {
             changeBrushTool(event.target.value as BrushTool);
           }}
         >
-          <option value={BrushTool.NONE}>{BrushTool.NONE}</option>
-          <option value={BrushTool.DOT}>{BrushTool.DOT}</option>
-          <option value={BrushTool.ERASER}>{BrushTool.ERASER}</option>
-          <option value={BrushTool.PAINT_BUCKET}>{BrushTool.PAINT_BUCKET}</option>
-          <option value={BrushTool.SELECT}>{BrushTool.SELECT}</option>
-          <option value={BrushTool.LINE}>{BrushTool.LINE}</option>
-          <option value={BrushTool.RECTANGLE}>{BrushTool.RECTANGLE}</option>
-          <option value={BrushTool.RECTANGLE_FILLED}>{BrushTool.RECTANGLE_FILLED}</option>
-          <option value={BrushTool.ELLIPSE}>{BrushTool.ELLIPSE}</option>
-          <option value={BrushTool.ELLIPSE_FILLED}>{BrushTool.ELLIPSE_FILLED}</option>
+          {Object.values(BrushTool).map((tool) => (
+            <option key={tool} value={tool}>
+              {tool}
+            </option>
+          ))}
         </select>
-      </div>
+      </label>
 
-      <div style={{ marginTop: 10, marginBottom: 50, display: "flex" }}>
-        <button type="button" style={{ padding: "5px 10px", background: "none" }} onClick={undo}>
-          undo
+      <div className="canvas-history">
+        <button type="button" onClick={undo} aria-label="Undo last action">
+          <span aria-hidden="true">↶</span> Undo
         </button>
-        <button type="button" style={{ padding: "5px 10px", background: "none" }} onClick={redo}>
-          redo
+        <button type="button" onClick={redo} aria-label="Redo last action">
+          <span aria-hidden="true">↷</span> Redo
         </button>
       </div>
-    </>
+    </div>
   );
 };
 

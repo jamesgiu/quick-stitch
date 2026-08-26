@@ -31,6 +31,13 @@ export const ProjectManager = ({
 
   return (
     <div className="projects-panel">
+      <div className="project-heading">
+        <div>
+          <span className="eyebrow">WORKSPACE</span>
+          <h2>Projects</h2>
+        </div>
+        <span className="project-count">{projects.length} saved</span>
+      </div>
       <div className="project-actions">
         <input
           type="text"

@@ -1,13 +1,7 @@
-import React, {
-  forwardRef,
-  useCallback,
-  useEffect,
-  useImperativeHandle,
-  useMemo,
-  useRef,
-} from "react";
-import { BrushTool, Dotting, DottingRef, useBrush, useDotting } from "dotting";
+import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
+import { Dotting, DottingRef, useBrush, useDotting } from "dotting";
 import { useProjectStore, ProjectDottingState } from "./projectStore";
+import CanvasToolbar from "./components/CanvasToolbar";
 import "./PixelCanvas.css";
 
 export type PixelCanvasHandle = {
@@ -41,34 +35,6 @@ const PixelCanvas = forwardRef<PixelCanvasHandle>((_, ref) => {
   const { undo, redo } = useDotting(canvasRef);
   const { changeBrushColor, brushTool, changeBrushTool } = useBrush(canvasRef);
   const lastAutosaveSignature = useRef<string | null>(null);
-  const swatchColors = useMemo(
-    () => [
-      "#FF0000",
-      "#0000FF",
-      "#00FF00",
-      "#FF00FF",
-      "#00FFFF",
-      "#FFFF00",
-      "#000000",
-      "#FFFFFF",
-    ],
-    []
-  );
-  const brushOptions = useMemo(
-    () => [
-      { value: BrushTool.NONE, label: BrushTool.NONE },
-      { value: BrushTool.DOT, label: BrushTool.DOT },
-      { value: BrushTool.ERASER, label: BrushTool.ERASER },
-      { value: BrushTool.PAINT_BUCKET, label: BrushTool.PAINT_BUCKET },
-      { value: BrushTool.SELECT, label: BrushTool.SELECT },
-      { value: BrushTool.LINE, label: BrushTool.LINE },
-      { value: BrushTool.RECTANGLE, label: BrushTool.RECTANGLE },
-      { value: BrushTool.RECTANGLE_FILLED, label: BrushTool.RECTANGLE_FILLED },
-      { value: BrushTool.ELLIPSE, label: BrushTool.ELLIPSE },
-      { value: BrushTool.ELLIPSE_FILLED, label: BrushTool.ELLIPSE_FILLED },
-    ],
-    []
-  );
 
   const getCurrentProjectLayers = useCallback(() => {
     const instance = ensureDottingInstanceIsBound(canvasRef.current);
@@ -188,65 +154,13 @@ const PixelCanvas = forwardRef<PixelCanvasHandle>((_, ref) => {
         height={"40vh"}
         backgroundColor={"rgba(58, 29, 53, 0.30)"}
       />
-      <div>
-        {swatchColors.map((color) => (
-          <div
-            key={color}
-            onClick={() => changeBrushColor(color)}
-            style={{
-              width: 25,
-              height: 25,
-              margin: 10,
-              border: "1px solid black",
-              backgroundColor: color,
-              display: "inline-block",
-            }}
-          />
-        ))}
-      </div>
-      <div>
-        <select
-          style={{
-            marginLeft: 15,
-          }}
-          value={brushTool}
-          onChange={(event) => {
-            changeBrushTool(event.target.value as BrushTool);
-          }}
-        >
-          {brushOptions.map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div
-        style={{
-          marginTop: 10,
-          marginBottom: 50,
-          display: "flex",
-        }}
-      >
-        <button
-          style={{
-            padding: "5px 10px",
-            background: "none",
-          }}
-          onClick={undo}
-        >
-          undo
-        </button>
-        <button
-          style={{
-            padding: "5px 10px",
-            background: "none",
-          }}
-          onClick={redo}
-        >
-          redo
-        </button>
-      </div>
+      <CanvasToolbar
+        brushTool={brushTool}
+        changeBrushTool={changeBrushTool}
+        changeBrushColor={changeBrushColor}
+        undo={undo}
+        redo={redo}
+      />
     </div>
   );
 });

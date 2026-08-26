@@ -1,14 +1,14 @@
 import { EuiIcon, EuiLink } from "@elastic/eui";
 
 export const AppFooter = () => (
-  <div className="qs-footer">
+  <footer className="qs-footer">
     <span>
-      © 2026 {Math.random() > 0.5 ? "Jiv" : "Lames"}{" "}
+      © 2026 QuickStitch{" "}
       <EuiLink href="https://github.com/jamesgiu/quick-stitch" target="https://github.com/jamesgiu/quick-stitch">
         <EuiIcon size="l" type={"logoGithub"} />
       </EuiLink>
     </span>
-  </div>
+      </footer>
 );
 
 export default AppFooter;
