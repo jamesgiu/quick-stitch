@@ -1,4 +1,11 @@
-import React, { forwardRef, useCallback, useEffect, useImperativeHandle, useRef } from "react";
+import React, {
+  forwardRef,
+  useCallback,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+} from "react";
 import { BrushTool, Dotting, DottingRef, useBrush, useDotting } from "dotting";
 import { useProjectStore, ProjectDottingState } from "./projectStore";
 import "./PixelCanvas.css";
@@ -34,6 +41,34 @@ const PixelCanvas = forwardRef<PixelCanvasHandle>((_, ref) => {
   const { undo, redo } = useDotting(canvasRef);
   const { changeBrushColor, brushTool, changeBrushTool } = useBrush(canvasRef);
   const lastAutosaveSignature = useRef<string | null>(null);
+  const swatchColors = useMemo(
+    () => [
+      "#FF0000",
+      "#0000FF",
+      "#00FF00",
+      "#FF00FF",
+      "#00FFFF",
+      "#FFFF00",
+      "#000000",
+      "#FFFFFF",
+    ],
+    []
+  );
+  const brushOptions = useMemo(
+    () => [
+      { value: BrushTool.NONE, label: BrushTool.NONE },
+      { value: BrushTool.DOT, label: BrushTool.DOT },
+      { value: BrushTool.ERASER, label: BrushTool.ERASER },
+      { value: BrushTool.PAINT_BUCKET, label: BrushTool.PAINT_BUCKET },
+      { value: BrushTool.SELECT, label: BrushTool.SELECT },
+      { value: BrushTool.LINE, label: BrushTool.LINE },
+      { value: BrushTool.RECTANGLE, label: BrushTool.RECTANGLE },
+      { value: BrushTool.RECTANGLE_FILLED, label: BrushTool.RECTANGLE_FILLED },
+      { value: BrushTool.ELLIPSE, label: BrushTool.ELLIPSE },
+      { value: BrushTool.ELLIPSE_FILLED, label: BrushTool.ELLIPSE_FILLED },
+    ],
+    []
+  );
 
   const getCurrentProjectLayers = useCallback(() => {
     const instance = ensureDottingInstanceIsBound(canvasRef.current);
@@ -71,8 +106,8 @@ const PixelCanvas = forwardRef<PixelCanvasHandle>((_, ref) => {
         }
       } catch (error) {
         if (attempt < MAX_EDITOR_READY_ATTEMPTS) {
-          setTimeout(() => restoreProjectState(project, attempt + 1), 50);
-          return;
+          const retryTimer = window.setTimeout(() => restoreProjectState(project, attempt + 1), 50);
+          return () => window.clearTimeout(retryTimer);
         }
 
         console.warn("Failed to restore project state", error);
@@ -154,19 +189,10 @@ const PixelCanvas = forwardRef<PixelCanvasHandle>((_, ref) => {
         backgroundColor={"rgba(58, 29, 53, 0.30)"}
       />
       <div>
-        {[
-          "#FF0000",
-          "#0000FF",
-          "#00FF00",
-          "#FF00FF",
-          "#00FFFF",
-          "#FFFF00",
-          "#000000",
-          "#FFFFFF",
-        ].map((color) => (
+        {swatchColors.map((color) => (
           <div
             key={color}
-            onClick={changeBrushColor.bind(null, color)}
+            onClick={() => changeBrushColor(color)}
             style={{
               width: 25,
               height: 25,
@@ -188,16 +214,11 @@ const PixelCanvas = forwardRef<PixelCanvasHandle>((_, ref) => {
             changeBrushTool(event.target.value as BrushTool);
           }}
         >
-          <option value={BrushTool.NONE}>{BrushTool.NONE}</option>
-          <option value={BrushTool.DOT}>{BrushTool.DOT}</option>
-          <option value={BrushTool.ERASER}>{BrushTool.ERASER}</option>
-          <option value={BrushTool.PAINT_BUCKET}>{BrushTool.PAINT_BUCKET}</option>
-          <option value={BrushTool.SELECT}>{BrushTool.SELECT}</option>
-          <option value={BrushTool.LINE}>{BrushTool.LINE}</option>
-          <option value={BrushTool.RECTANGLE}>{BrushTool.RECTANGLE}</option>
-          <option value={BrushTool.RECTANGLE_FILLED}>{BrushTool.RECTANGLE_FILLED}</option>
-          <option value={BrushTool.ELLIPSE}>{BrushTool.ELLIPSE}</option>
-          <option value={BrushTool.ELLIPSE_FILLED}>{BrushTool.ELLIPSE_FILLED}</option>
+          {brushOptions.map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
       </div>
       <div

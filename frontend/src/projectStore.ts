@@ -87,6 +87,16 @@ export const useProjectStore = create<ProjectStoreState>()(
 
       saveProject: (projectId: string, dottingState: unknown) => {
         const serialized = serializeDottingState(dottingState);
+        const currentProject = get().projects.find((project) => project.id === projectId) ?? null;
+
+        if (!currentProject) {
+          return null;
+        }
+
+        if (currentProject.dottingState === serialized) {
+          return currentProject;
+        }
+
         const updatedProjects = get().projects.map((project) =>
           project.id === projectId
             ? {
