@@ -27,6 +27,11 @@
 
 .color-palette { display: flex; gap: 7px; flex-wrap: wrap; }
 .color-swatch { width: 30px; height: 30px; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 1px #bdc9c2; cursor: pointer; padding: 0; }
+.custom-color-picker { position: relative; display: block; width: 30px; height: 30px; cursor: pointer; }
+.custom-color-picker input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.custom-color-swatch { display: grid; place-items: center; width: 30px; height: 30px; border: 2px solid white; border-radius: 50%; box-shadow: 0 0 0 1px #bdc9c2; color: white; font-size: 1.25rem; font-weight: 700; text-shadow: 0 1px 2px #17252a; box-sizing: border-box; }
+.custom-color-picker:focus-within .custom-color-swatch { outline: 3px solid #f4ae55; outline-offset: 2px; }
+.visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
 .tool-picker { display: flex; align-items: center; gap: 8px; color: #66767a; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; }
 .tool-picker select { min-height: 40px; border: 1px solid #dbe4df; border-radius: 6px; padding: 0 10px; background: #f8faf8; color: #17252a; font: inherit; text-transform: none; letter-spacing: 0; }
 .canvas-history { display: flex; gap: 8px; margin-left: auto; }
@@ -38,6 +43,7 @@
     .canvas-toolbar { position: sticky; bottom: 10px; z-index: 20; flex-wrap: wrap; gap: 12px; padding: 12px; }
     .color-palette { order: 1; width: 100%; justify-content: space-between; }
     .color-swatch { width: 34px; height: 34px; }
+    .custom-color-picker, .custom-color-swatch { width: 34px; height: 34px; }
     .tool-picker { order: 2; flex: 1; }
     .tool-picker select { width: 100%; }
     .canvas-history { order: 3; margin-left: 0; }

@@ -1,4 +1,5 @@
 import { BrushTool } from "dotting";
+import { useState } from "react";
 import "../PixelCanvas.css";
 
 type CanvasToolbarProps = {
@@ -27,6 +28,13 @@ export const CanvasToolbar = ({
   undo,
   redo,
 }: CanvasToolbarProps) => {
+  const [customColor, setCustomColor] = useState("#E56B45");
+
+  const handleCustomColorChange = (color: string) => {
+    setCustomColor(color);
+    changeBrushColor(color);
+  };
+
   return (
     <div className="canvas-toolbar" aria-label="Canvas tools">
       <div className="color-palette" aria-label="Color palette">
@@ -40,6 +48,17 @@ export const CanvasToolbar = ({
             style={{ backgroundColor: color }}
           />
         ))}
+        <label className="custom-color-picker" aria-label="Choose a custom color">
+          <input
+            type="color"
+            value={customColor}
+            onChange={(event) => handleCustomColorChange(event.target.value.toUpperCase())}
+          />
+          <span className="custom-color-swatch" style={{ backgroundColor: customColor }} aria-hidden="true">
+            +
+          </span>
+          <span className="visually-hidden">Custom color</span>
+        </label>
       </div>
 
       <label className="tool-picker">
