@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/quick-stitch/static/css/main.a8f051fd.css",
-    "main.js": "/quick-stitch/static/js/main.330d853e.js",
+    "main.css": "/quick-stitch/static/css/main.f993e81f.css",
+    "main.js": "/quick-stitch/static/js/main.f2cdb241.js",
     "icon..js": "/quick-stitch/static/js/icon..a94da2fe.chunk.js",
     "icon.accessibility.js": "/quick-stitch/static/js/icon.accessibility.434d6d25.chunk.js",
     "icon.aggregate.js": "/quick-stitch/static/js/icon.aggregate.56228548.chunk.js",
@@ -502,8 +502,8 @@
     "static/media/logo.webp": "/quick-stitch/static/media/logo.d3fd9af0041f7fa08cf9.webp",
     "static/media/bg3.webp": "/quick-stitch/static/media/bg3.69fa1b5581c05b7682ca.webp",
     "index.html": "/quick-stitch/index.html",
-    "main.a8f051fd.css.map": "/quick-stitch/static/css/main.a8f051fd.css.map",
-    "main.330d853e.js.map": "/quick-stitch/static/js/main.330d853e.js.map",
+    "main.f993e81f.css.map": "/quick-stitch/static/css/main.f993e81f.css.map",
+    "main.f2cdb241.js.map": "/quick-stitch/static/js/main.f2cdb241.js.map",
     "icon..a94da2fe.chunk.js.map": "/quick-stitch/static/js/icon..a94da2fe.chunk.js.map",
     "icon.accessibility.434d6d25.chunk.js.map": "/quick-stitch/static/js/icon.accessibility.434d6d25.chunk.js.map",
     "icon.aggregate.56228548.chunk.js.map": "/quick-stitch/static/js/icon.aggregate.56228548.chunk.js.map",
@@ -1003,7 +1003,7 @@
     "6453.02e04ccf.chunk.js.map": "/quick-stitch/static/js/6453.02e04ccf.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.a8f051fd.css",
-    "static/js/main.330d853e.js"
+    "static/css/main.f993e81f.css",
+    "static/js/main.f2cdb241.js"
   ]
 }
