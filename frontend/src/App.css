@@ -26,6 +26,9 @@
   gap: 16px;
   padding: 10px 4px 24px;
 }
+.theme-controls { display: flex; gap: 8px; margin-left: auto; align-self: flex-start; }
+.theme-toggle { min-height: 38px; border: 1px solid var(--line); border-radius: 6px; padding: 0 11px; background: var(--panel); color: var(--ink); cursor: pointer; font-weight: 700; }
+.theme-toggle.active { background: var(--ink); color: white; }
 .brand-mark {
   display: grid;
   place-items: center;
@@ -171,7 +174,7 @@
 }
 
 .bg-image-wrapper {
-  background: url("/public/bg3.webp");
+  pointer-events: none;
   background-position: center top;
 }
 
@@ -182,6 +185,30 @@
   position: absolute;
 }
 
+.dark-mode {
+  --ink: #edf3ee;
+  --muted: #aab9b2;
+  --panel: rgba(26, 38, 38, 0.94);
+  --line: #40524e;
+  --accent: #f18a5e;
+  background-color: #172426;
+  background-image: radial-gradient(#354745 0.8px, transparent 0.8px);
+}
+.dark-mode .project-actions input,
+.dark-mode .project-item,
+.dark-mode .tool-picker select,
+.dark-mode .canvas-history button { background: #223333; color: var(--ink); }
+.dark-mode .project-actions .secondary-button { background: #30423f; color: var(--ink); }
+.dark-mode .app-header h1,
+.dark-mode .counter-display,
+.dark-mode .pixel-wrapper { color: var(--ink); }
+.dark-mode .brand-mark { box-shadow: 5px 5px 0 #071012; }
+.cat-mode .bg-image-wrapper { opacity: 0.16; background-size: 420px auto; background-repeat: repeat; }
+.cat-mode .brand-mark { background: #d88b4d; }
+.cat-mode .app-header h1 { font-family: Georgia, serif; }
+.cat-mode .project-item.active { background: #fff0d8; }
+.cat-mode.dark-mode .project-item.active { background: #4b3930; }
+
 @media (max-width: 600px) {
   .app-content { padding: 12px 10px 28px; }
   .projects-panel { padding: 15px; margin-bottom: 12px; }
@@ -191,6 +218,11 @@
   .project-list { display: grid; grid-template-columns: 1fr; }
   .project-item { min-width: 0; width: 100%; box-sizing: border-box; }
   .eui-flex-dotting { margin: 0; }
+  .app-header { padding: 8px 4px 18px; align-items: flex-start; flex-wrap: wrap; }
+  .brand-mark { width: 48px; height: 48px; }
+  .header-subtitle { font-size: 0.8rem; }
+  .theme-controls { width: 100%; margin-left: 0; padding-left: 64px; }
+  .theme-toggle { flex: 1; min-height: 44px; }
 }
 
 .icons-flex-group {

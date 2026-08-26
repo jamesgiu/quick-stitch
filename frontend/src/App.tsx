@@ -3,7 +3,7 @@ import "./index.scss";
 import "./index.css";
 import "./App.css";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { EuiFlexGroup, EuiProvider } from "@elastic/eui";
 import PixelCanvas, { PixelCanvasHandle } from "./PixelCanvas";
 import AppHeader from "./components/AppHeader";
@@ -14,6 +14,8 @@ import { useProjectStore } from "./projectStore";
 
 const MyApp = () => {
   const canvasRef = useRef<PixelCanvasHandle>(null);
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem("quick-stitch-dark-mode") === "true");
+  const [catMode, setCatMode] = useState(() => localStorage.getItem("quick-stitch-cat-mode") === "true");
   const projects = useProjectStore((state) => state.projects);
   const selectedProjectId = useProjectStore((state) => state.selectedProjectId);
   const autosaveEnabled = useProjectStore((state) => state.autosaveEnabled);
@@ -21,6 +23,14 @@ const MyApp = () => {
   const openProject = useProjectStore((state) => state.openProject);
   const deleteProject = useProjectStore((state) => state.deleteProject);
   const toggleAutosave = useProjectStore((state) => state.toggleAutosave);
+
+  useEffect(() => {
+    localStorage.setItem("quick-stitch-dark-mode", String(darkMode));
+  }, [darkMode]);
+
+  useEffect(() => {
+    localStorage.setItem("quick-stitch-cat-mode", String(catMode));
+  }, [catMode]);
 
   const handleCreateProject = (name: string) => {
     const project = createProject(name);
@@ -37,9 +47,18 @@ const MyApp = () => {
 
   return (
     <EuiProvider>
-      <div className="app-content">
-        <div className="bg-image-wrapper" />
-        <AppHeader />
+      <div className={`app-content${darkMode ? " dark-mode" : ""}${catMode ? " cat-mode" : ""}`}>
+        <div
+          className="bg-image-wrapper"
+          style={{ backgroundImage: `url(${process.env.PUBLIC_URL}/bg3.webp)` }}
+          aria-hidden="true"
+        />
+        <AppHeader
+          darkMode={darkMode}
+          catMode={catMode}
+          onToggleDarkMode={() => setDarkMode((enabled) => !enabled)}
+          onToggleCatMode={() => setCatMode((enabled) => !enabled)}
+        />
 
         <ProjectManager
           projects={projects}
